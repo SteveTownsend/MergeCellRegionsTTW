@@ -32,6 +32,7 @@ namespace MergeCellRegionsTTW
                     continue;
                 }
                 ++needsCheck;
+                ++cellOverrides;
                 // aggregate Regions from winning override and any earlier instances of the CELL
                 var cellLink = cell.Record.FormKey.ToLink<ICellGetter>();
                 ISet<FormKey> regions = new HashSet<FormKey>();
