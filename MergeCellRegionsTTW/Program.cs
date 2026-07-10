@@ -20,6 +20,7 @@ namespace MergeCellRegionsTTW
             int cells = 0;
             int merged = 0;
             int needsCheck = 0;
+            int cellOverrides = 0;
             int skipped = 0;
             Console.WriteLine("Aggregate all unique Region records from any master or override for an exterior CELL");
             foreach (var cell in state.LoadOrder.PriorityOrder.Cell().WinningContextOverrides(state.LinkCache))
@@ -41,6 +42,7 @@ namespace MergeCellRegionsTTW
                     {
                         continue;
                     }
+                    ++cellOverrides;
                     foreach (var region in cellVersion.Regions)
                     {
                         if (regions.Add(region.FormKey))
@@ -58,7 +60,7 @@ namespace MergeCellRegionsTTW
                     ++merged;
                 }
             }
-            Console.WriteLine("Total CELLs {0}, skipped {1}, checked {2}, Regions merged {3}", cells, skipped, needsCheck, merged);
+            Console.WriteLine("Total CELLs {0}, skipped {1}, checked calls/overrides {2}/{3}, Regions merged {4}", cells, skipped, needsCheck, cellOverrides, merged);
         }
     }
 }
