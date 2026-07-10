@@ -61,7 +61,7 @@ namespace MergeCellRegionsTTW
                     ++merged;
                 }
             }
-            Console.WriteLine("Total CELLs {0}, skipped {1}, checked calls/overrides {2}/{3}, Regions merged {4}", cells, skipped, needsCheck, cellOverrides, merged);
+            Console.WriteLine("Total CELLs {0}, skipped {1}, checked CELL masters/total records/Regions merged {2}/{3}/{4}", cells, skipped, needsCheck, cellOverrides, merged);
         }
     }
 }
