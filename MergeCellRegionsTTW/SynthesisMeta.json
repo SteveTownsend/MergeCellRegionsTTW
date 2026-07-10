@@ -1,0 +1,9 @@
+{
+  "Nickname": "MergeRegionsTTW",
+  "Visibility": "Visible",
+  "OneLineDescription": "Aggregate all Regions for a CELL",
+  "LongDescription": "Logic similar to hNVSE Regon aggregation",
+  "PreferredAutoVersioning": "Default",
+  "RequiredMods": [],
+  "TargetedReleases": []
+}
