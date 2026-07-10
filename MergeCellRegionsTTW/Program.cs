@@ -1,7 +1,6 @@
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Fallout3;
 using Mutagen.Bethesda.Plugins;
-using Mutagen.Bethesda.Plugins.Cache;
 using Mutagen.Bethesda.Synthesis;
 
 namespace MergeCellRegionsTTW
@@ -18,17 +17,25 @@ namespace MergeCellRegionsTTW
 
         public static void RunPatch(IPatcherState<IFallout3Mod, IFallout3ModGetter> state)
         {
+            int cells = 0;
+            int merged = 0;
+            int needsCheck = 0;
+            int skipped = 0;
+            Console.WriteLine("Aggregate all unique Region records from any master or override for an exterior CELL");
             foreach (var cell in state.LoadOrder.PriorityOrder.Cell().WinningContextOverrides(state.LinkCache))
             {
-                if (cell is null || cell.Record is null)
+                ++cells;
+                if (cell is null || cell.Record is null || cell.Record.Flags.HasFlag(Cell.Flag.IsInteriorCell))
                 {
+                    ++skipped;
                     continue;
                 }
+                ++needsCheck;
                 // aggregate Regions from winning override and any earlier instances of the CELL
                 var cellLink = cell.Record.FormKey.ToLink<ICellGetter>();
                 ISet<FormKey> regions = new HashSet<FormKey>();
                 IList<IFormLinkGetter<IRegionGetter>> allRegions = new List<IFormLinkGetter<IRegionGetter>>();
-                foreach (var cellVersion in cellLink.ResolveAll<ICellGetter>(state.LinkCache))
+                foreach (var cellVersion in cellLink.ResolveAll(state.LinkCache))
                 {
                     if (cellVersion.Regions is null)
                     {
@@ -48,8 +55,10 @@ namespace MergeCellRegionsTTW
                 {
                     var updated = cell.GetOrAddAsOverride(state.PatchMod);
                     updated.Regions = [.. allRegions];
+                    ++merged;
                 }
             }
+            Console.WriteLine("Total CELLs {0}, skipped {1}, checked {2}, Regions merged {3}", cells, skipped, needsCheck, merged);
         }
     }
 }
