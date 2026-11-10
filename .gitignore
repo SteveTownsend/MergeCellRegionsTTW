@@ -353,3 +353,4 @@ MigrationBackup/
 *.sln.iml
 
 /.editorconfig
+/MergeCellRegionsTTW/Properties/launchSettings.json

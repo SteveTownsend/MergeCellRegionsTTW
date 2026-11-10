@@ -2,6 +2,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Fallout3;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Synthesis;
+using Noggog.StructuredStrings.CSharp;
 
 namespace MergeCellRegionsTTW
 {
@@ -23,10 +24,20 @@ namespace MergeCellRegionsTTW
             int cellOverrides = 0;
             int skipped = 0;
             Console.WriteLine("Aggregate all unique Region records from any master or override for an exterior CELL");
+            FormKey target = new FormKey(new ModKey("Fallout3", ModType.Master), 0x4d4b4);
             foreach (var cell in state.LoadOrder.PriorityOrder.Cell().WinningContextOverrides(state.LinkCache))
             {
                 ++cells;
-                if (cell is null || cell.Record is null || cell.Record.Flags.HasFlag(Cell.Flag.IsInteriorCell))
+                if (cell is null || cell.Record is null)
+                {
+                    ++skipped;
+                    continue;
+                }
+                if (cell.Record.FormKey == target)
+                {
+                    Console.WriteLine("target found {}", target);
+                }
+                if (cell.Record.Flags.HasFlag(Cell.Flag.IsInteriorCell))
                 {
                     ++skipped;
                     continue;

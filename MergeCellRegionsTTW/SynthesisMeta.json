@@ -1,5 +1,5 @@
 {
-  "Nickname": "MergeRegionsTTW",
+  "Nickname": "MergeCellRegionsTTW-Local",
   "Visibility": "Visible",
   "OneLineDescription": "Aggregate all Regions for a CELL",
   "LongDescription": "Logic similar to hNVSE Regon aggregation",
