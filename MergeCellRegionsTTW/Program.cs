@@ -35,7 +35,7 @@ namespace MergeCellRegionsTTW
                 }
                 if (cell.Record.FormKey == target)
                 {
-                    Console.WriteLine("target found {}", target);
+                    Console.WriteLine("target found");
                 }
                 if (cell.Record.Flags.HasFlag(Cell.Flag.IsInteriorCell))
                 {
