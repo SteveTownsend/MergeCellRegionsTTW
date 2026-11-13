@@ -23,6 +23,8 @@ namespace MergeCellRegionsTTW
             int needsCheck = 0;
             int cellOverrides = 0;
             int skipped = 0;
+            int corrected = 0;
+            ISet<string> correctedPlugins = new HashSet<string>();
             Console.WriteLine("Aggregate all unique Region records from any master or override for an exterior CELL");
             FormKey target = new FormKey(new ModKey("Fallout3", ModType.Master), 0x4d4b4);
             foreach (var cell in state.LoadOrder.PriorityOrder.Cell().WinningContextOverrides(state.LinkCache))
@@ -32,6 +34,19 @@ namespace MergeCellRegionsTTW
                 {
                     ++skipped;
                     continue;
+                }
+                if ((cell.Record.Persistent?.Count ?? 0) == 0
+                    && (cell.Record.Temporary?.Count ?? 0) == 0
+                    && (cell.Record.VisibleWhenDistant?.Count ?? 0) == 0
+                    && cell.Record.NavigationMeshes.Count == 0
+                    && cell.Record.Landscape == null)
+                {
+                    Console.WriteLine("GRUP-less CELL {0}/{1} in {2:X6}", cell.ModKey.FileName.ToString(), cell.Record.FormKey.ID,
+                        cell.Parent!.ModKey.FileName.ToString());
+                    // force clean write
+                    var updated = cell.GetOrAddAsOverride(state.PatchMod);
+                    ++corrected;
+                    correctedPlugins.Add(cell.ModKey.FileName.ToString());
                 }
                 if (cell.Record.FormKey == target)
                 {
@@ -73,6 +88,11 @@ namespace MergeCellRegionsTTW
                 }
             }
             Console.WriteLine("Total CELLs {0}, skipped {1}, checked CELL masters/total records/Regions merged {2}/{3}/{4}", cells, skipped, needsCheck, cellOverrides, merged);
+            Console.WriteLine("Corrected suspect GRUP {0}", corrected);
+            foreach (var plugin in correctedPlugins)
+            {
+                Console.WriteLine("Cells corrected in {0}", plugin);
+            }
         }
     }
 }
