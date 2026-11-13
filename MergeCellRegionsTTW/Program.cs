@@ -41,7 +41,7 @@ namespace MergeCellRegionsTTW
                     && cell.Record.NavigationMeshes.Count == 0
                     && cell.Record.Landscape == null)
                 {
-                    Console.WriteLine("GRUP-less CELL {0}/{1} in {2:X6}", cell.ModKey.FileName.ToString(), cell.Record.FormKey.ID,
+                    Console.WriteLine("GRUP-less CELL {0}/{1:X6} in {2}", cell.ModKey.FileName.ToString(), cell.Record.FormKey.ID,
                         cell.Parent!.ModKey.FileName.ToString());
                     // force clean write
                     var updated = cell.GetOrAddAsOverride(state.PatchMod);
