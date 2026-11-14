@@ -35,11 +35,12 @@ namespace MergeCellRegionsTTW
                     ++skipped;
                     continue;
                 }
-                if ((cell.Record.Persistent?.Count ?? 0) == 0
-                    && (cell.Record.Temporary?.Count ?? 0) == 0
-                    && (cell.Record.VisibleWhenDistant?.Count ?? 0) == 0
-                    && cell.Record.NavigationMeshes.Count == 0
-                    && cell.Record.Landscape == null)
+                //if ((cell.Record.Persistent?.Count ?? 0) == 0
+                //    && (cell.Record.Temporary?.Count ?? 0) == 0
+                //    && (cell.Record.VisibleWhenDistant?.Count ?? 0) == 0
+                //    && cell.Record.NavigationMeshes.Count == 0
+                //    && cell.Record.Landscape == null)
+                if (cell.Record.InvalidGrup)
                 {
                     Console.WriteLine("GRUP-less CELL {0}/{1:X6} in {2}", cell.ModKey.FileName.ToString(), cell.Record.FormKey.ID,
                         cell.Parent!.ModKey.FileName.ToString());
